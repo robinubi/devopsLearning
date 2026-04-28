@@ -1,0 +1,31 @@
+# Stage 7: Prometheus — Alerting Rules
+# These fire when conditions are met for the specified duration
+groups:
+  - name: devopslab-alerts
+    rules:
+      - alert: ApiDown
+        expr: up{job="devopslab-api"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "DevOps Lab API is down"
+          description: "The API has been unreachable for more than 1 minute."
+
+      - alert: HighRequestLatency
+        expr: histogram_quantile(0.9, rate(http_request_duration_seconds_bucket[5m])) > 0.5
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High request latency"
+          description: "P90 latency is {{ $value }}s (threshold: 0.5s)."
+
+      - alert: HighErrorRate
+        expr: rate(http_requests_received_total{code=~"5.."}[5m]) > 0.1
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High 5xx error rate"
+          description: "Error rate is {{ $value }} req/s over the last 5 minutes."

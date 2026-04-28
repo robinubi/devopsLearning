@@ -1,0 +1,58 @@
+# Stage 6: Ansible — Main Playbook
+# Run: ansible-playbook -i ansible/inventory/localhost.ini ansible/playbook.yml
+# Run verbose: ansible-playbook -i ansible/inventory/localhost.ini ansible/playbook.yml -v
+---
+- name: DevOps Lab — Configure Local Environment
+  hosts: local
+  become: false
+
+  vars:
+    app_name: devopslab
+    app_dir: "/tmp/{{ app_name }}"
+    log_dir: "/tmp/{{ app_name }}/logs"
+    app_version: "1.0.0"
+
+  tasks:
+    - name: Ensure app directories exist
+      file:
+        path: "{{ item }}"
+        state: directory
+        mode: "0755"
+      loop:
+        - "{{ app_dir }}"
+        - "{{ log_dir }}"
+
+    - name: Write environment config file
+      copy:
+        dest: "{{ app_dir }}/.env"
+        content: |
+          APP_NAME={{ app_name }}
+          APP_VERSION={{ app_version }}
+          APP_ENV=development
+          MANAGED_BY=ansible
+          TIMESTAMP={{ ansible_date_time.iso8601 }}
+        mode: "0644"
+
+    - name: Write a version file
+      copy:
+        dest: "{{ app_dir }}/version.txt"
+        content: "{{ app_version }}\n"
+        mode: "0644"
+
+    - name: Log deployment event
+      lineinfile:
+        path: "{{ log_dir }}/deploy.log"
+        line: "[{{ ansible_date_time.iso8601 }}] Playbook ran on {{ inventory_hostname }} — version {{ app_version }}"
+        create: yes
+
+    - name: Confirm Docker is available
+      command: docker --version
+      register: docker_check
+      changed_when: false
+      ignore_errors: true
+
+    - name: Print summary
+      debug:
+        msg:
+          - "✅ Configured {{ app_name }} v{{ app_version }} at {{ app_dir }}"
+          - "🐳 Docker: {{ docker_check.stdout | default('not found') }}"

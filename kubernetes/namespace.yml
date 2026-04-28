@@ -1,0 +1,8 @@
+# Stage 4: Kubernetes — Namespace
+# Namespaces isolate resources; good practice even for local dev
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: devopslab
+  labels:
+    project: devops-learning-lab

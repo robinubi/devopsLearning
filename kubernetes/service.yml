@@ -1,0 +1,15 @@
+# Stage 4: Kubernetes — Service
+# Exposes the deployment so it can receive traffic
+apiVersion: v1
+kind: Service
+metadata:
+  name: devopslab-api
+  namespace: devopslab
+spec:
+  selector:
+    app: devopslab-api
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+  type: NodePort   # Use NodePort for minikube local access

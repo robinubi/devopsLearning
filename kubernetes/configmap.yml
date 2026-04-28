@@ -1,0 +1,11 @@
+# Stage 4: Kubernetes — ConfigMap
+# Non-secret config injected as environment variables
+# Secrets (passwords, tokens) go in kubectl Secrets instead
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: devopslab-config
+  namespace: devopslab
+data:
+  ASPNETCORE_ENVIRONMENT: "Staging"
+  APP_VERSION: "1.0.0"
