@@ -1,8 +1,8 @@
-# Stage 3: Docker — Multi-stage build for .NET 9 API
+# Stage 3: Docker — Multi-stage build for .NET 10 API
 # Multi-stage keeps the final image small (~100MB vs ~800MB)
 
 # ── Stage 1: Build ──────────────────────────────────────────
-FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /app
 
 # Copy csproj first (layer caching — only re-restores if .csproj changes)
@@ -11,14 +11,14 @@ RUN dotnet restore
 
 # Copy source and publish
 COPY src/DevOpsLab.Api/ ./
-RUN dotnet publish -c Release -o /out --no-restore
+RUN dotnet publish -c Release -o /out
 
 # ── Stage 2: Runtime (no SDK, much smaller) ──────────────────
-FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS runtime
+FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS runtime
 WORKDIR /app
 
 # Non-root user for security
-RUN adduser --disabled-password --gecos '' appuser
+RUN useradd --no-create-home --shell /bin/false appuser
 USER appuser
 
 COPY --from=build /out .

@@ -31,7 +31,7 @@ check_tool kubectl      "brew install kubectl"
 check_tool minikube     "brew install minikube"
 check_tool terraform    "brew tap hashicorp/tap && brew install hashicorp/tap/terraform"
 check_tool ansible      "brew install ansible"
-check_tool dotnet       "https://dotnet.microsoft.com/download/dotnet/9.0"
+check_tool dotnet       "https://dotnet.microsoft.com/download/dotnet/10.0"
 
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 

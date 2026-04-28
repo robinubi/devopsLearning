@@ -42,7 +42,7 @@ Then open:
 ```
 devops-learning-lab/
 ├── .github/workflows/     # Stage 2: CI + CD pipelines
-├── src/DevOpsLab.Api/     # .NET 9 Web API (the app used throughout)
+├── src/DevOpsLab.Api/     # .NET 10 Web API (the app used throughout)
 ├── docker/                # Stage 3: Dockerfile + docker-compose
 ├── kubernetes/            # Stage 4: K8s manifests for minikube
 ├── terraform/             # Stage 5: Infrastructure as Code
@@ -73,5 +73,5 @@ brew install --cask docker        # Docker Desktop
 brew install minikube kubectl
 brew tap hashicorp/tap && brew install hashicorp/tap/terraform
 brew install ansible
-# .NET 9 SDK: https://dotnet.microsoft.com/download
+# .NET 10 SDK: https://dotnet.microsoft.com/download
 ```

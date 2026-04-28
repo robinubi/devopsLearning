@@ -2,8 +2,6 @@
 # Starts: API + Prometheus + Grafana
 # Run: docker compose -f docker/docker-compose.yml up -d
 
-version: "3.9"
-
 services:
 
   # ── .NET 9 API ──────────────────────────────────────────────
