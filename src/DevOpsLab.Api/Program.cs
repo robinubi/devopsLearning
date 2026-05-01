@@ -23,6 +23,20 @@ app.MapGet("/health", () => Results.Ok(new
     environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "unknown"
 }));
 
+// Existing dummy api JSON response endpoint
+app.MapGet("/api/data", () => Results.Ok(new { 
+    Message = "Success", 
+    Timestamp = DateTime.UtcNow 
+}));
+
+// --- NEW DUMMY ENDPOINT ---
+app.MapGet("/api/status", () => Results.Ok(new { 
+    status = "Active", 
+    uptime_seconds = Random.Shared.Next(100, 5000),
+    server_node = Environment.MachineName 
+}));
+// --------------------------
+
 app.MapGet("/hello/{name}", (string name) =>
     new { message = $"Hello, {name}! Served by DevOps Lab." });
 
